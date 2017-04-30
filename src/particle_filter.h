@@ -107,6 +107,9 @@ public:
 	const bool initialized() const {
 		return is_initialized;
 	}
+
+
+  LandmarkObs findLandmarkById(int id, std::vector<LandmarkObs>);
 };
 
 
