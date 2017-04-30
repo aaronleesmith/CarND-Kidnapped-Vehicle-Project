@@ -168,10 +168,15 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     for (int j = 0; j < transformed_observations.size(); j++) {
       LandmarkObs observation = transformed_observations[j];
       LandmarkObs landmark;
+      bool found_landmark = false;
+      for(int k = 0; k < landmarks_in_range.size(); k++) {
+        if (landmarks_in_range[k].id == observation.id) {
+          landmark = landmarks_in_range[k];
+          found_landmark = true;
+        }
+      }
 
-      try {
-        landmark = findLandmarkById(observation.id, landmarks_in_range);
-      } catch(std::exception& e) {
+      if (found_landmark == false) {
         continue;
       }
 
@@ -182,16 +187,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     particles[i].weight = weight;
 
   }
-}
-
-LandmarkObs ParticleFilter::findLandmarkById(int id, std::vector<LandmarkObs> landmarks) {
-  for(int i = 0; i < landmarks.size(); i++) {
-    if (landmarks[i].id == id) {
-      return landmarks[i];
-    }
-  }
-
-  throw std::exception();
 }
 
 /**
